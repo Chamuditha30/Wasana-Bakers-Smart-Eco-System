@@ -1,58 +1,29 @@
 import React from "react";
-import CustomButton from "../../ui/CustomButton";
+import HeroSection from "../../components/web/HeroSection";
+import PopularCakes from "../../components/web/PopularCakes";
+import SimpleProcess from "../../components/web/SimpleProcess";
+import AboutUs from "../../components/web/AboutUs";
+import FindUs from "../../components/web/FindUs";
 
 export default function HomePage() {
   return (
-    <div className="bg-orange-50 w-full">
+    <div className="bg-surface w-full">
       
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-between gap-10 px-4 py-12 md:flex-row md:px-10 md:py-20">
+      <HeroSection />
 
-        {/* left side content */}
-        <div className="flex w-full flex-col gap-6 md:w-1/2">
+      {/* Popular Cakes Section */}
+      <PopularCakes />
 
-          {/* Branch name */}
-          <div className="w-fit bg-red-100 px-3 py-1 rounded-full border border-red-700">
-            <p className="text-sm font-medium text-red-700">
-              Anuradhapura Branch
-            </p>
-          </div>
+      {/* Simple Process Section */}
+      <SimpleProcess />
 
-          {/* Heading */}
-          <h1 className="text-4xl font-bold leading-tight text-gray-900 md:text-5xl">
-              Freshly Baked for Every{" "}
-              <span className="text-red-700">
-                Special Moment
-              </span>
-          </h1>
+      {/* About Us Section */}
+      <AboutUs />
 
-          {/* Description */}
-          <p className="max-w-xl text-lg leading-relaxed text-gray-600">
-            Explore our handcrafted cakes and place your order for convenient pickup at our Anuradhapura branch. Made with love, ready when you are.
-          </p>
+      {/* Find Us Section */}
+      <FindUs />
 
-          {/* buttons*/}
-          <div className="flex flex-wrap gap-2">
-            <CustomButton size="sm">
-              Order Now
-            </CustomButton>
-
-            <CustomButton variant="outlined" size="sm">
-              View Cakes
-            </CustomButton >
-          </div>
-        </div>
-        
-        {/* right side content */}
-        <div className="flex h-80 w-full items-center justify-center rounded-2xl md:h-96 md:w-1/2">
-          <img
-            src="/images/hero-cake.png"
-            alt="Hero Cake"
-            className="h-full w-full rounded-2xl object-cover"
-          />
-        </div>
-        
-      </section>
     </div>
   );
 }
