@@ -1,7 +1,7 @@
 import React from "react";
 import CustomButton from "../../ui/CustomButton";
 
-export default function FindUs() {
+export default function FindUsSection() {
   return (
     <section className="flex flex-col items-center justify-between gap-10 px-4 py-12 md:flex-row md:px-10 md:py-20">
       
