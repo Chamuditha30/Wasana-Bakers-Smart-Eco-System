@@ -1,7 +1,7 @@
 import React from 'react'
 import CustomButton from '../../ui/CustomButton'
 
-export default function SimpleProcess() {
+export default function SimpleProcessSection() {
   return (
     <div className="flex w-full flex-col items-center gap-2 px-4 py-12 md:px-10 md:py-10">
            

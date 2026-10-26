@@ -50,9 +50,10 @@ const sampleCakes = [
   },
 ];
 
-export default function PopularCakes() {
+export default function PopularCakesSection() {
   return (
     <div className="flex w-full flex-col items-center gap-2 bg-white px-4 py-12 md:px-10 md:py-10">
+      
       {/* Section label */}
       <p className="text-sm font-medium text-red-600">OUR SPECIALTIES</p>
 
