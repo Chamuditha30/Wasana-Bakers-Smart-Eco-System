@@ -16,21 +16,21 @@ const router = Router();
 router.post("/create", createBranchController);
 
 //get all branches
-router.get("/all-branches", getAllBranchesController);
+router.get("/", getAllBranchesController);
 
 //get branch by id
-router.get("/branch/:id", getBranchByIdController);
+router.get("/:branchId", getBranchByIdController);
 
 //update exist branch
-router.put("/update/:id", updateBranchController);
+router.put("/update/:branchId", updateBranchController);
 
 //deactivate branch
-router.put("/deactivate/:id", deactivateBranchController);
+router.put("/deactivate/:branchId", deactivateBranchController);
 
 //activate branch
-router.put("/activate/:id", activateBranchController);
+router.put("/activate/:branchId", activateBranchController);
 
 //delete branch
-router.delete("/delete/:id", deleteBranchController);
+router.delete("/delete/:branchId", deleteBranchController);
 
 export default router;

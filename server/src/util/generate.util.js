@@ -15,3 +15,19 @@ export const generateRef = (prefix) => {
 
   return `${prefix}-${time}-${random}`;
 };
+
+//generate temporary password
+export const generateTemporaryPassword = (length = 8) => {
+  const characters =
+    "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+
+  let password = "";
+
+  for (let i = 0; i < length; i++) {
+    password += characters.charAt(
+      Math.floor(Math.random() * characters.length),
+    );
+  }
+
+  return password;
+};

@@ -91,7 +91,10 @@ export const updateBranchService = async (branchId, data) => {
   }
 
   //update branch
-  return Branch.findByIdAndUpdate(branchId, updateData, { new: true });
+  return Branch.findByIdAndUpdate(branchId, updateData, {
+    new: true,
+    runValidators: true,
+  });
 };
 
 //deactivate branch
@@ -114,7 +117,7 @@ export const activateBranchService = async (branchId) => {
 
   if (!branch) throw createError("Branch not found", 404);
 
-  //deactivate branch
+  //activate branch
   branch.isActive = true;
 
   return branch.save();

@@ -24,24 +24,24 @@ export const getAllBranchesController = asyncHandler(async (req, res) => {
   const branches = await getAllBranchesService();
 
   res.status(200).json({
-    message: "All branches",
+    message: "Branches retrieved successfully",
     data: branches,
   });
 });
 
 //get branch by id
 export const getBranchByIdController = asyncHandler(async (req, res) => {
-  const branch = await getBranchService(req.params.id);
+  const branch = await getBranchService(req.params.branchId);
 
   res.status(200).json({
-    message: "Branch",
+    message: "Branch retrieved successfully",
     data: branch,
   });
 });
 
 //update exist branch
 export const updateBranchController = asyncHandler(async (req, res) => {
-  const branch = await updateBranchService(req.params.id, req.body);
+  const branch = await updateBranchService(req.params.branchId, req.body);
 
   res.status(201).json({
     message: "Branch updated successfully",
@@ -51,7 +51,7 @@ export const updateBranchController = asyncHandler(async (req, res) => {
 
 //deactivate branch
 export const deactivateBranchController = asyncHandler(async (req, res) => {
-  const branch = await deactivateBranchService(req.params.id);
+  const branch = await deactivateBranchService(req.params.branchId);
 
   res.status(201).json({
     message: "Branch deactivated successfully",
@@ -61,7 +61,7 @@ export const deactivateBranchController = asyncHandler(async (req, res) => {
 
 //activate branch
 export const activateBranchController = asyncHandler(async (req, res) => {
-  const branch = await activateBranchService(req.params.id);
+  const branch = await activateBranchService(req.params.branchId);
 
   res.status(201).json({
     message: "Branch activated successfully",
@@ -71,7 +71,7 @@ export const activateBranchController = asyncHandler(async (req, res) => {
 
 //delete branch
 export const deleteBranchController = asyncHandler(async (req, res) => {
-  const branch = await deleteBranchService(req.params.id);
+  const branch = await deleteBranchService(req.params.branchId);
 
   res.status(201).json({
     message: "Branch deleted successfully",
