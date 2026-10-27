@@ -16,6 +16,7 @@ import ExpensesPage from "./pages/pos/ExpensesPage";
 import ReportsPage from "./pages/pos/ReportsPage";
 import NotificationsPage from "./pages/pos/NotificationsPage";
 import SettingsPage from "./pages/pos/SettingsPage";
+import CakeDetailsPage from "./pages/web/CakeDetailsPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route element={<WebLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/cakes" element={<CakesPage />} />
+          <Route path="/cakes/:cakeId" element={<CakeDetailsPage />} />
         </Route>
 
         {/* POS */}

@@ -29,7 +29,7 @@ export default function CustomButton({
     <Button
       type={type}
       disabled={disabled}
-      onClick={onclick}
+      onClick={onClick}
       className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded px-4 py-2 font-semibold transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:rounded-lg ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       {...props}
     >
