@@ -6,6 +6,7 @@ import { errorHandler } from "./middlewares/error.middleware.js";
 import branchRoute from "./routes/branch.route.js";
 import authRoute from "./routes/auth.route.js";
 import userRoute from "./routes/user.route.js";
+import productRoute from "./routes/product.route.js";
 
 //initialize app
 export const app = express();
@@ -43,6 +44,7 @@ app.use(express.urlencoded({ limit: "3mb", extended: false }));
 app.use("/branch", branchRoute);
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+app.use("/product", productRoute);
 
 //error handler
 app.use(errorHandler);

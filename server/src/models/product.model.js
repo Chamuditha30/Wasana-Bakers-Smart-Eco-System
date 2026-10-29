@@ -8,6 +8,12 @@ const productSchema = new Schema(
       required: true,
     },
 
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
     category: {
       type: String,
       required: true,
