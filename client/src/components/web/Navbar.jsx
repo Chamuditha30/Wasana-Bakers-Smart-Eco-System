@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import logo from "../../images/logo.webp";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import CustomButton from "../../ui/CustomButton";
 import { ShoppingCart, Menu, X } from "lucide-react";
 
 export default function Navbar() {
   //initialize nav bar state
   const [isOpen, setIsOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -48,21 +46,9 @@ export default function Navbar() {
 
         {/* track and cart container */}
         <div className="flex items-center gap-2">
-          
-          {/* Cart Icon */}
-          <button
-            type="button"
-            onClick={() => navigate("/cart")}
-            aria-label="View cart"
-            className="text-secondary hover:text-primary rounded-lg p-2 transition-colors"
-          >
-            <ShoppingCart className="h-6 w-6" />
-          </button>
-
           <CustomButton variant="outlined">Track Order</CustomButton>
-
-          <CustomButton onClick={() => navigate("/cakes")}>
-            Order Now
+          <CustomButton>
+            <ShoppingCart /> Order Now
           </CustomButton>
         </div>
       </div>
@@ -79,35 +65,10 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Actions */}
-        <div className="flex items-center gap-3">
-
-          {/* cart */}
-          <button
-            type="button"
-            onClick={() => {
-              setIsOpen(false);
-              navigate("/cart");
-            }}
-            aria-label="View cart"
-            className="text-secondary hover:text-primary"
-          >
-            <ShoppingCart className="h-6 w-6" />
-          </button>
-
-          {/* burger menu icon */}
-          <button
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isOpen}
-            className="text-secondary"
-          >
-            {isOpen ? <X /> : <Menu />}
-          </button>
-
-        </div>
-        
+        {/* burger menu icon */}
+        <button onClick={() => setIsOpen(!isOpen)} className="text-secondary">
+          {isOpen ? <X /> : <Menu />}
+        </button>
       </div>
 
       {/* burger menu */}
@@ -139,14 +100,8 @@ export default function Navbar() {
           <CustomButton variant="outlined" size="sm">
             Track Order
           </CustomButton>
-          <CustomButton 
-            size="sm"
-            onClick={() => {
-              setIsOpen(false);
-              navigate("/cakes");
-            }}
-          >
-            Order Now
+          <CustomButton size="sm">
+            <ShoppingCart /> Order Now
           </CustomButton>
         </div>
       </div>
