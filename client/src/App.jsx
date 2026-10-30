@@ -17,6 +17,7 @@ import ReportsPage from "./pages/pos/ReportsPage";
 import NotificationsPage from "./pages/pos/NotificationsPage";
 import SettingsPage from "./pages/pos/SettingsPage";
 import CakeDetailsPage from "./pages/web/CakeDetailsPage";
+import CartPage from "./pages/web/CartPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/cakes" element={<CakesPage />} />
           <Route path="/cakes/:cakeId" element={<CakeDetailsPage />} />
+          <Route path="/cart" element={<CartPage />} />
         </Route>
 
         {/* POS */}

@@ -20,6 +20,27 @@ export default function CakeDetailsSection() {
   const [cakeMessage, setCakeMessage] = useState("");
   const navigate = useNavigate();
 
+  const handleAddToCart = () => {
+    const cartItem = {
+      cakeId: cake.id,
+      name: cake.name,
+      image: cake.image,
+      size: selectedSize,
+      unitPrice: selectedPrice,
+      quantity: quantity,
+      message: cakeMessage.trim(),
+      totalPrice: totalPrice,
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    const updatedCart = [...existingCart, cartItem];
+
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    navigate("/cart");
+  };
+
   if (!cake) {
     return (
       <div className="p-8">
@@ -31,7 +52,6 @@ export default function CakeDetailsSection() {
 
   return (
     <div className="bg-surface px-4 py-10 md:px-8">
-
       {/* Breadcrumb */}
       <nav className="text-tertiary text-sm">
         <Link to="/">Home</Link>
@@ -66,7 +86,6 @@ export default function CakeDetailsSection() {
           <div>
             <h3 className="mb-3 font-semibold">Select Size</h3>
 
-            {/* size option */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {cakeSizes.map((size) => (
                 <button
@@ -148,16 +167,13 @@ export default function CakeDetailsSection() {
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-3 sm:flex-row">
-            <CustomButton
-              variant="outlined"
-              onClick={() => navigate("/cakes")}
-            >
+            <CustomButton variant="outlined" onClick={() => navigate("/cakes")}>
               Back to Cakes
             </CustomButton>
 
             <CustomButton
               variant="primary"
-              onClick={() => console.log("Add to Cart clicked")}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </CustomButton>
