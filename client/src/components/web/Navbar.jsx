@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import logo from "../../images/logo.webp";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import CustomButton from "../../ui/CustomButton";
 import { ShoppingCart, Menu, X } from "lucide-react";
 
 export default function Navbar() {
   //initialize nav bar state
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -47,7 +48,7 @@ export default function Navbar() {
         {/* track and cart container */}
         <div className="flex items-center gap-2">
           <CustomButton variant="outlined">Track Order</CustomButton>
-          <CustomButton>
+          <CustomButton onClick={() => navigate("/cart")}>
             <ShoppingCart /> Order Now
           </CustomButton>
         </div>
@@ -100,7 +101,13 @@ export default function Navbar() {
           <CustomButton variant="outlined" size="sm">
             Track Order
           </CustomButton>
-          <CustomButton size="sm">
+          <CustomButton
+            size="sm"
+            onClick={() => {
+              setIsOpen(false);
+              navigate("/cart");
+            }}
+          >
             <ShoppingCart /> Order Now
           </CustomButton>
         </div>
