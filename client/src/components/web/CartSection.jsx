@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../ui/CustomButton";
+import OrderSummary from "./OrderSummarySection";
 
 export default function CartSection() {
   const [cartItems, setCartItems] = useState(() => {
@@ -121,43 +122,18 @@ export default function CartSection() {
         </div>
 
         {/* Right: order summary*/}
-        <div className="h-fit rounded-2xl border border-gray-200 bg-white p-5">
-          <h2 className="mb-6 text-lg font-semibold">Order Summary</h2>
 
-          <div className="space-y-3 border-b border-gray-200 pb-4">
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>Subtotal ({itemCount} items)</span>
-              <span>Rs. {subtotal.toLocaleString()}</span>
-            </div>
-
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>Pickup</span>
-              <span>Free</span>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between py-5">
-            <span className="text-lg font-bold">Total</span>
-
-            <span className="text-xl font-bold text-red-600">
-              Rs. {total.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <CustomButton
-              variant="primary"
-              disabled={cartItems.length === 0}
-              onClick={() => console.log("Proceed to Checkout")}
-            >
-              Proceed to Checkout
-            </CustomButton>
-
-            <CustomButton variant="outlined" onClick={() => navigate("/cakes")}>
-              Continue Shopping
-            </CustomButton>
-          </div>
-        </div>
+        <OrderSummary
+          subtotal={subtotal}
+          itemCount={itemCount}
+          buttonText="Proceed to Checkout"
+          onButtonClick={() => navigate("/checkout")}
+          disabled={cartItems.length === 0}
+        >
+          <CustomButton variant="outlined" onClick={() => navigate("/cakes")}>
+            Continue Shopping
+          </CustomButton>
+        </OrderSummary>
       </div>
     </section>
   );
