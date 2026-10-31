@@ -138,6 +138,7 @@ export default function CakesSection() {
             status={cake.status}
             price={cake.price}
             image={cake.image}
+            cake={cake}
           />
         ))}
       </div>
