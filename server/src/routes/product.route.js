@@ -6,11 +6,7 @@ import {
   getProductByIdController,
   updateProductController,
 } from "../controllers/product.controller.js";
-import {
-  requireActive,
-  requireAdmin,
-  requireAuth,
-} from "../middlewares/auth.middleware.js";
+import { requireActive, requireAuth } from "../middlewares/auth.middleware.js";
 
 //initialize router
 const router = Router();

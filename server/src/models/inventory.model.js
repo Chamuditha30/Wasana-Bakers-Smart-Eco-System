@@ -20,8 +20,13 @@ const inventorySchema = new Schema(
     lowStockThreshold: {
       type: Number,
       required: true,
-      default: 5,
       min: 0,
+    },
+
+    stockUnit: {
+      type: String,
+      enum: ["grams", "pieces"],
+      required: true,
     },
 
     //product reference
@@ -40,5 +45,8 @@ const inventorySchema = new Schema(
   },
   { timestamps: true },
 );
+
+//prevent duplicate inventory for the same product size and branch
+inventorySchema.index({ product: 1, branch: 1 }, { unique: true });
 
 export const Inventory = model("Inventory", inventorySchema);

@@ -69,7 +69,7 @@ export const updateUserController = asyncHandler(async (req, res) => {
     req.body,
   );
 
-  res.status(201).json({
+  res.status(200).json({
     message: "User updated successfully",
     data: user,
   });
@@ -82,7 +82,7 @@ export const deactivateUserController = asyncHandler(async (req, res) => {
     req.user.branchId,
   );
 
-  res.status(201).json({
+  res.status(200).json({
     message: "User deactivated successfully",
     data: user,
   });
@@ -92,7 +92,7 @@ export const deactivateUserController = asyncHandler(async (req, res) => {
 export const activateUserController = asyncHandler(async (req, res) => {
   const user = await activateUserService(req.params.userId, req.user.branchId);
 
-  res.status(201).json({
+  res.status(200).json({
     message: "User activated successfully",
     data: user,
   });

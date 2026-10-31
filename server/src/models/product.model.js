@@ -38,20 +38,26 @@ const productSchema = new Schema(
       },
     ],
 
-    sizes: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
+    pricingType: {
+      type: String,
+      enum: ["by_weight", "fixed"],
+      required: true,
+    },
 
-        price: {
-          type: Number,
-          required: true,
-          min: 0,
-        },
-      },
-    ],
+    pricePerKg: {
+      type: Number,
+      min: 0,
+    },
+
+    price: {
+      type: Number,
+      min: 0,
+    },
+
+    size: {
+      type: String,
+      trim: true,
+    },
 
     isAvailable: {
       type: Boolean,

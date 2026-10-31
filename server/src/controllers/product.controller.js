@@ -21,7 +21,7 @@ export const createProductController = asyncHandler(async (req, res) => {
 export const getAllProductsController = asyncHandler(async (req, res) => {
   const products = await getAllProductsService(req.user.branchId);
 
-  res.status(201).json({
+  res.status(200).json({
     message: "Products retrieved successfully",
     data: products,
   });
@@ -34,7 +34,7 @@ export const getProductByIdController = asyncHandler(async (req, res) => {
     req.user.branchId,
   );
 
-  res.status(201).json({
+  res.status(200).json({
     message: "Product retrieved successfully",
     data: product,
   });
@@ -48,7 +48,7 @@ export const updateProductController = asyncHandler(async (req, res) => {
     req.body,
   );
 
-  res.status(201).json({
+  res.status(200).json({
     message: "Product updated successfully",
     data: product,
   });
