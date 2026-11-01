@@ -19,6 +19,7 @@ import SettingsPage from "./pages/pos/SettingsPage";
 import CakeDetailsPage from "./pages/web/CakeDetailsPage";
 import CartPage from "./pages/web/CartPage";
 import CheckoutPage from "./pages/web/CheckoutPage";
+import OrderConfirmationPage from "./pages/web/OrderConfirmationPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/cakes/:cakeId" element={<CakeDetailsPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
         </Route>
 
         {/* POS */}

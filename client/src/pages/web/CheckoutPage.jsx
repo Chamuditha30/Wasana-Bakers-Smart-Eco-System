@@ -98,7 +98,6 @@ export default function CheckoutPage() {
         </div>
 
         {/* Right: order summary */}
-
         <div>
           <OrderSummary
             subtotal={subtotal}
