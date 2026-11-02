@@ -20,6 +20,7 @@ import CakeDetailsPage from "./pages/web/CakeDetailsPage";
 import CartPage from "./pages/web/CartPage";
 import CheckoutPage from "./pages/web/CheckoutPage";
 import OrderConfirmationPage from "./pages/web/OrderConfirmationPage";
+import TrackOrderPage from "./pages/web/TrackOrderPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+          <Route path="/track-order" element={<TrackOrderPage />} />
         </Route>
 
         {/* POS */}

@@ -22,9 +22,7 @@ export default function OrderActionsSection() {
       {/* Track Order */}
       <CustomButton
         variant="outlined"
-        onClick={() => {
-          console.log("Track Order - not connected yet");
-        }}
+        onClick={() => navigate("/track-order")}
       >
         Track Order
       </CustomButton>
