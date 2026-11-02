@@ -8,7 +8,7 @@ const orderStages = [
   "Completed",
 ];
 
-export default function OrderStatusTimeline({ currentStatus }) {
+export default function OrderStatusSection({ currentStatus }) {
   const currentIndex = orderStages.indexOf(currentStatus);
 
   return (

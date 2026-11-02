@@ -1,9 +1,9 @@
 import React from "react";
-import HeroSection from "../../components/web/HeroSection";
-import PopularCakes from "../../components/web/PopularCakesSection";
-import SimpleProcess from "../../components/web/SimpleProcessSection";
-import AboutUs from "../../components/web/AboutUsSection";
-import FindUs from "../../components/web/FindUsSection";
+import HeroSection from "../../components/web/home/HeroSection";
+import PopularCakes from "../../components/web/home/PopularCakesSection";
+import SimpleProcess from "../../components/web/home/SimpleProcessSection";
+import AboutUs from "../../components/web/home/AboutUsSection";
+import FindUs from "../../components/web/home/FindUsSection";
 
 export default function HomePage() {
   return (

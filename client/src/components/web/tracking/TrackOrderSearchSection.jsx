@@ -2,7 +2,7 @@ import React from "react";
 import CustomButton from "../../../ui/CustomButton";
 import CustomInput from "../../../ui/CustomInput";
 
-export default function TrackOrderSearch({
+export default function TrackOrderSearchSection({
   orderReference,
   setOrderReference,
   phoneNumber,

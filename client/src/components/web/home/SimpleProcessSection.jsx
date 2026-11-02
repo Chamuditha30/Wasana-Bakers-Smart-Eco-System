@@ -1,5 +1,5 @@
 import React from 'react'
-import CustomButton from '../../ui/CustomButton'
+import CustomButton from '../../../ui/CustomButton'
 
 export default function SimpleProcessSection() {
   return (

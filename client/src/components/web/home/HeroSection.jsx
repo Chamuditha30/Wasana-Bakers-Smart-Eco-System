@@ -1,11 +1,11 @@
 import React from "react";
-import CustomButton from "../../ui/CustomButton";
-import sample1 from "../../images/sample1.webp";
-import sample2 from "../../images/sample2.webp";
-import sample3 from "../../images/sample3.webp";
-import sample4 from "../../images/sample4.webp";
-import sample5 from "../../images/sample5.webp";
-import Carousel from "../../ui/Carousel";
+import CustomButton from "../../../ui/CustomButton";
+import sample1 from "../../../images/sample1.webp";
+import sample2 from "../../../images/sample2.webp";
+import sample3 from "../../../images/sample3.webp";
+import sample4 from "../../../images/sample4.webp";
+import sample5 from "../../../images/sample5.webp";
+import Carousel from "../../../ui/Carousel";
 
 //sample images
 const images = [

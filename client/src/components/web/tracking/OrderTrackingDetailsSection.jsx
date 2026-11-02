@@ -1,8 +1,8 @@
 import React from "react";
 import { Phone } from "lucide-react";
-import OrderStatusTimeline from "./OrderStatusTimeline";
+import OrderStatusTimeline from "./OrderStatusSection";
 
-export default function OrderTrackingDetails({ order }) {
+export default function OrderTrackingDetailsSection({ order }) {
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
       {/* Reference and status */}

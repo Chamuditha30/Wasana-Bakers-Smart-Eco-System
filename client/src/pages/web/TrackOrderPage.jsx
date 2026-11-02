@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TrackOrderSearch from "../../components/web/tracking/TrackOrderSearch";
-import OrderTrackingDetails from "../../components/web/tracking/OrderTrackingDetails";
+import TrackOrderSearch from "../../components/web/tracking/TrackOrderSearchSection";
+import OrderTrackingDetails from "../../components/web/tracking/OrderTrackingDetailsSection";
 
 export default function TrackOrderPage() {
   const [orderReference, setOrderReference] = useState("");
