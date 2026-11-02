@@ -28,7 +28,7 @@ export const createProductService = async (branch, data) => {
         pricingType,
         pricePerKg,
         price,
-        size,
+        weight,
         isAvailable,
       } = data;
 
@@ -57,14 +57,14 @@ export const createProductService = async (branch, data) => {
         pricingType,
         pricePerKg: pricingType === "by_weight" ? pricePerKg : undefined,
         price: pricingType === "fixed" ? price : undefined,
-        size,
+        weight,
         isAvailable,
         branch,
       });
 
       await product.save({ session });
 
-      //create inventory for each size
+      //create inventory
       await createInventoryService(branch, product, session);
     });
 
@@ -102,7 +102,7 @@ export const updateProductService = async (_id, branch, data) => {
     "pricingType",
     "pricePerKg",
     "price",
-    "size",
+    "weight",
     "isAvailable",
   ];
 
