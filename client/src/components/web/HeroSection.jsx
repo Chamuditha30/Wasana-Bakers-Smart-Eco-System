@@ -51,7 +51,7 @@ export default function HeroSection() {
       </div>
 
       {/* right side content */}
-      <div className="flex h-full w-full items-center justify-center rounded-2xl md:h-full md:w-1/2">
+      <div className="flex w-full items-start justify-center rounded-2xl md:w-140">
         <Carousel images={images} />
       </div>
     </section>

@@ -1,37 +1,89 @@
-import React from 'react'
-import CustomButton from '../../ui/CustomButton'
+import React from "react";
+import CustomButton from "../../ui/CustomButton";
+import PublicCakeCard from "../../ui/PublicCakeCard";
+import sample1 from "../../images/sample1.webp";
+import sample2 from "../../images/sample2.webp";
+import sample3 from "../../images/sample3.webp";
+import sample4 from "../../images/sample4.webp";
+import sample5 from "../../images/sample5.webp";
+
+const sampleCakes = [
+  {
+    id: 1,
+    name: "Chocolate Cake",
+    description: "Rich chocolate cake with creamy chocolate frosting.",
+    status: "Available",
+    price: 3500,
+    image: sample1,
+  },
+  {
+    id: 2,
+    name: "Butter Cake",
+    description: "Soft and delicious classic butter cake.",
+    status: "Limited",
+    price: 2800,
+    image: sample2,
+  },
+  {
+    id: 3,
+    name: "Vanilla Cake",
+    description: "Light vanilla sponge cake with smooth cream frosting.",
+    status: "Available",
+    price: 3000,
+    image: sample3,
+  },
+  {
+    id: 4,
+    name: "Red Velvet Cake",
+    description: "Soft red velvet cake with creamy cheese frosting.",
+    status: "Sold Out",
+    price: 4200,
+    image: sample4,
+  },
+  {
+    id: 5,
+    name: "Strawberry Cake",
+    description: "Fresh strawberry cake with strawberry cream.",
+    status: "Available",
+    price: 3800,
+    image: sample5,
+  },
+];
 
 export default function PopularCakes() {
   return (
-    <div className="flex w-full flex-col items-center gap-2 px-4 py-12 md:px-10 md:py-10 bg-white">
-       
-        {/* Section label */}
-        <p className="font-medium text-red-600 text-sm">
-            OUR SPECIALTIES
-        </p>
+    <div className="flex w-full flex-col items-center gap-2 bg-white px-4 py-12 md:px-10 md:py-10">
+      {/* Section label */}
+      <p className="text-sm font-medium text-red-600">OUR SPECIALTIES</p>
 
-        {/* Heading */}
-        <h2 className="text-center font-semibold text-3xl text-gray-800 ">
-            Popular Cakes
-        </h2>
+      {/* Heading */}
+      <h2 className="text-center text-3xl font-semibold text-gray-800">
+        Popular Cakes
+      </h2>
 
-        {/* Description */}
-        <p className="text-sm font-medium text-tertiary md:text-sm">
-            Handcrafted with premium ingredients for every occasion
-        </p>
+      {/* Description */}
+      <p className="text-tertiary text-sm font-medium md:text-sm">
+        Handcrafted with premium ingredients for every occasion
+      </p>
 
-        {/* Popular Cakes Images */}
-        <div className="flex flex-col gap-6 md:flex-row">
-            <img src="https://images.unsplash.com/photo-1601924582975-4b0f3e1c6d7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Popular Cake 1" className="w-full h-auto rounded-lg shadow-md" />
-            <img src="https://images.unsplash.com/photo-1601924582975-4b0f3e1c6d7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Popular Cake 2" className="w-full h-auto rounded-lg shadow-md" />
-            <img src="https://images.unsplash.com/photo-1601924582975-4b0f3e1c6d7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Popular Cake 3" className="w-full h-auto rounded-lg shadow-md" />
-        </div>
- 
-        {/* View All Cakes Button */}
-        <CustomButton variant="outlined" size="sm" className="mt-6">
-            View All Cakes
-        </CustomButton>
+      {/* Popular Cakes Images */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {sampleCakes.slice(0, 4).map((cake) => (
+          <PublicCakeCard
+            key={cake.id}
+            name={cake.name}
+            description={cake.description}
+            status={cake.status}
+            price={cake.price}
+            image={cake.image}
+          />
+        ))}
+      </div>
 
+      {/* View All Cakes Button */}
+      <CustomButton variant="outlined" size="sm" className="mt-6">
+        View All Cakes
+      </CustomButton>
     </div>
-  )
+  );
 }
