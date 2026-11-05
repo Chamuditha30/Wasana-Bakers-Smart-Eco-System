@@ -1,18 +1,18 @@
 import React from "react";
 import { Button } from "@headlessui/react";
 
-//define variant styles
 const variantStyles = {
-  primary: "bg-primary text-white hover:bg-rose-800",
-  secondary: "bg-surface border-muted text-muted border hover:bg-stone-200",
-  outlined: "border-2 border-tertiary text-tertiary",
+  primary: "bg-[#d9222a] text-white hover:bg-[#b81b22] shadow-sm",
+  secondary: "bg-white border border-neutral-300 text-neutral-800 hover:bg-neutral-50",
+  outlined: "border border-[#d9222a] text-[#d9222a] hover:bg-rose-50",
+  danger: "border border-rose-300 text-rose-600 hover:bg-rose-50",
+  text: "text-[#d9222a] hover:underline p-0 font-bold",
 };
 
-//define button sizes
 const sizeStyles = {
-  sm: "px-3 py-1.5 text-sm",
-  md: "px-4 py-2 text-base",
-  lg: "px-6 py-3 text-lg",
+  sm: "px-3 py-1.5 text-xs",
+  md: "px-4 py-2 text-xs",
+  lg: "px-5 py-2.5 text-sm",
 };
 
 export default function CustomButton({
@@ -29,8 +29,8 @@ export default function CustomButton({
     <Button
       type={type}
       disabled={disabled}
-      onClick={onclick}
-      className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded px-4 py-2 font-semibold transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:rounded-lg ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      onClick={onClick}
+      className={`inline-flex items-center justify-center font-semibold rounded-xl transition duration-150 select-none disabled:cursor-not-allowed disabled:opacity-50 ${variantStyles[variant] || variantStyles.primary} ${sizeStyles[size] || sizeStyles.md} ${className}`}
       {...props}
     >
       {children}

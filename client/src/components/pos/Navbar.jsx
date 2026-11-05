@@ -1,260 +1,118 @@
 import React from "react";
 import {
-  LayoutDashboard,
+  Home,
   Calculator,
   Box,
   CakeSlice,
   Layers,
+  CreditCard,
   Timer,
   UsersRound,
   BanknoteArrowDown,
-  CreditCard,
-  ChartNoAxesCombined,
+  BarChart3,
   BellRing,
   Settings,
   LogOut,
-  Ellipsis,
 } from "lucide-react";
 import logo from "../../images/logo.webp";
-import { NavLink, useLocation } from "react-router-dom";
-import {
-  Button,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/react";
+import { NavLink, useNavigate } from "react-router-dom";
 
-//navigation links
 const navigations = [
-  {
-    name: "Dashboard",
-    link: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    name: "Sales",
-    link: "/sales",
-    icon: Calculator,
-  },
-  {
-    name: "Orders",
-    link: "/orders",
-    icon: Box,
-  },
-  {
-    name: "Payments",
-    link: "/payments",
-    icon: CreditCard,
-  },
-  {
-    name: "Products",
-    link: "/products",
-    icon: CakeSlice,
-  },
-  {
-    name: "Inventory",
-    link: "/inventory",
-    icon: Layers,
-  },
-  {
-    name: "Pickup Slots",
-    link: "/pickup-slots",
-    icon: Timer,
-  },
-  {
-    name: "Customers",
-    link: "/customers",
-    icon: UsersRound,
-  },
-  {
-    name: "Expenses",
-    link: "/expenses",
-    icon: BanknoteArrowDown,
-  },
-  {
-    name: "Reports",
-    link: "/reports",
-    icon: ChartNoAxesCombined,
-  },
-  {
-    name: "Notifications",
-    link: "/notifications",
-    icon: BellRing,
-  },
-  {
-    name: "Settings",
-    link: "/settings",
-    icon: Settings,
-  },
+  { name: "Dashboard", link: "/dashboard", icon: Home },
+  { name: "Sales", link: "/sales", icon: Calculator },
+  { name: "Orders", link: "/orders", icon: Box, badge: 2 },
+  { name: "Products", link: "/products", icon: CakeSlice },
+  { name: "Inventory", link: "/inventory", icon: Layers },
+  { name: "Payments", link: "/payments", icon: CreditCard, badge: 1 },
+  { name: "Pickup Slots", link: "/pickup-slots", icon: Timer },
+  { name: "Customers", link: "/customers", icon: UsersRound },
+  { name: "Expenses", link: "/expenses", icon: BanknoteArrowDown },
+  { name: "Reports", link: "/reports", icon: BarChart3 },
+  { name: "Notifications", link: "/notifications", icon: BellRing },
+  { name: "Settings", link: "/settings", icon: Settings },
 ];
 
-//sample user
-const user = { name: "Wasana Kumari", role: "Admin" };
+const user = { name: "Wasana Kumari", role: "Owner" };
 
 export default function Navbar() {
-  //initialize useLocation
-  const location = useLocation();
+  const navigate = useNavigate();
 
   return (
-    <>
-      {/* desktop navbar */}
-      <div className="bg-secondary hidden h-screen w-1/6 flex-col justify-between p-6 md:flex">
-        {/* logo container */}
-        <div className="border-b-tertiary flex items-center gap-2 border-b pb-4">
-          <img src={logo} alt="logo" className="size-12" />
-
-          <div>
-            <p className="font-semibold text-white">Horana</p>
-            <p className="text-primary text-lg font-bold">Wasana Bakers</p>
-          </div>
+    <aside className="bg-[#211a17] hidden h-screen w-[240px] shrink-0 flex-col justify-between border-r border-[#2f2521] md:flex overflow-hidden">
+      {/* Brand Header */}
+      <div className="flex items-center gap-3 px-6 py-5 shrink-0">
+        <div className="size-10 shrink-0 overflow-hidden rounded-full bg-[#c8102e] p-0.5 flex items-center justify-center shadow-md">
+          <img 
+            src={logo} 
+            alt="Wasana Bakers" 
+            className="size-full rounded-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }} 
+          />
         </div>
-
-        {/* navigations container */}
-        <div className="flex flex-col">
-          {navigations.map((nav) => {
-            const Icon = nav.icon;
-
-            return (
-              <NavLink
-                key={nav.link}
-                to={nav.link}
-                end
-                className={({ isActive }) =>
-                  `flex items-center gap-4 rounded-lg px-4 py-3 transition-colors duration-300 ease-out ${
-                    isActive
-                      ? "bg-primary font-semibold text-white"
-                      : "hover:bg-tertiary text-white/75 hover:text-white"
-                  }`
-                }
-              >
-                <Icon size={20} />
-                {nav.name}
-              </NavLink>
-            );
-          })}
-        </div>
-
-        {/* profile/logout container */}
-        <div className="border-t-tertiary flex items-center justify-between gap-1 border-t pt-4">
-          <div className="bg-primary pointer-events-none rounded-full p-2 font-semibold text-white select-none">
-            <p>
-              {user.name
-                .split(" ")
-                .map((word) => word[0])
-                .join("")
-                .toUpperCase()}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-white">{user.name}</p>
-            <p className="text-xs text-white/75">{user.role}</p>
-          </div>
-
-          <LogOut className="cursor-pointer text-white/75 transition-colors duration-300 ease-out hover:font-semibold hover:text-white" />
+        <div className="leading-tight">
+          <p className="text-white text-sm font-bold tracking-tight">Wasana Bakers</p>
+          <p className="text-[11px] text-[#8e807a]">POS System</p>
         </div>
       </div>
 
-      {/* mobile bottom navbar */}
-      <div className="bg-secondary fixed right-0 bottom-0 left-0 z-10 flex w-full items-center justify-between gap-1 py-2 md:hidden">
-        {[
-          ...navigations
-            .filter((nav) =>
-              ["/dashboard", "/sales", "/orders", "/payments"].includes(
-                nav.link,
-              ),
-            )
-            .map((nav) => {
-              const Icon = nav.icon;
+      {/* Scrollable Navigation List */}
+      <nav 
+        className="flex-1 overflow-y-auto px-3.5 py-1 space-y-1"
+        style={{
+          scrollbarWidth: "thin",
+          scrollbarColor: "#3e322c transparent"
+        }}
+      >
+        {navigations.map((nav) => {
+          const Icon = nav.icon;
+          return (
+            <NavLink
+              key={nav.link}
+              to={nav.link}
+              className={({ isActive }) =>
+                `flex items-center justify-between rounded-xl px-4 py-2.5 text-xs font-medium transition-all ${
+                  isActive
+                    ? "bg-[#c8102e] font-semibold text-white shadow-sm"
+                    : "text-[#aba09a] hover:bg-[#2c2320] hover:text-white"
+                }`
+              }
+            >
+              <div className="flex items-center gap-3">
+                <Icon size={18} strokeWidth={2} />
+                <span>{nav.name}</span>
+              </div>
+              {nav.badge && (
+                <span className="flex size-4.5 items-center justify-center rounded-full bg-[#c8102e] text-[10px] font-bold text-white shadow-sm">
+                  {nav.badge}
+                </span>
+              )}
+            </NavLink>
+          );
+        })}
+      </nav>
 
-              return (
-                <NavLink
-                  key={nav.link}
-                  to={nav.link}
-                  end
-                  className={({ isActive }) =>
-                    `flex flex-1 flex-col items-center gap-1 py-1 text-xs transition-colors duration-300 ease-out ${
-                      isActive ? "text-primary" : "text-white/75"
-                    }`
-                  }
-                >
-                  <Icon size={22} />
-                  <p>{nav.name}</p>
-                </NavLink>
-              );
-            }),
-        ]}
+      {/* Footer User Profile & Logout */}
+      <div className="flex items-center justify-between px-5 py-4 border-t border-[#2f2521] shrink-0 bg-[#1c1613]">
+        <div className="flex items-center gap-3">
+          <div className="bg-[#c8102e] flex size-8.5 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm">
+            WK
+          </div>
+          <div className="leading-tight">
+            <p className="text-xs font-semibold text-white">{user.name}</p>
+            <p className="text-[10px] text-[#8e807a]">{user.role}</p>
+          </div>
+        </div>
 
-        <Menu as={"div"} className="relative flex flex-1 justify-center">
-          <MenuButton
-            className={`flex flex-1 flex-col items-center gap-1 py-1 text-xs transition-colors duration-300 ease-out ${
-              [
-                "/products",
-                "/inventory",
-                "/pickup-slots",
-                "/customers",
-                "/expenses",
-                "/reports",
-                "/notifications",
-                "/settings",
-              ].includes(location.pathname)
-                ? "text-primary"
-                : "text-white/75"
-            }`}
-          >
-            <Ellipsis size={22} />
-            <p>More</p>
-          </MenuButton>
-
-          <MenuItems className="bg-secondary border-tertiary absolute right-0 bottom-full mb-3 w-52 origin-bottom-right rounded-xl border p-2 shadow-xl focus:outline-none">
-            {navigations
-              .filter((nav) =>
-                [
-                  "/products",
-                  "/inventory",
-                  "/pickup-slots",
-                  "/customers",
-                  "/expenses",
-                  "/reports",
-                  "/notifications",
-                  "/settings",
-                ].includes(nav.link),
-              )
-              .map((nav) => {
-                const Icon = nav.icon;
-
-                return (
-                  <MenuItem key={nav.link}>
-                    <NavLink
-                      to={nav.link}
-                      className={({ isActive }) =>
-                        `flex items-center gap-3 rounded-lg px-3 py-3 text-sm ${
-                          isActive
-                            ? "bg-primary text-white"
-                            : "data-focus:bg-tertiary text-white/75 data-focus:text-white"
-                        }`
-                      }
-                    >
-                      <Icon size={18} />
-                      <p>{nav.name}</p>
-                    </NavLink>
-                  </MenuItem>
-                );
-              })}
-
-            <div className="border-tertiary my-2 border-t" />
-
-            <MenuItem>
-              <Button className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm text-red-400">
-                {" "}
-                <LogOut size={18} />
-                <p>Logout</p>
-              </Button>
-            </MenuItem>
-          </MenuItems>
-        </Menu>
+        <button
+          onClick={() => navigate("/login")}
+          title="Logout"
+          className="rounded-lg p-1.5 text-[#8e807a] transition-colors hover:text-white"
+        >
+          <LogOut size={17} />
+        </button>
       </div>
-    </>
+    </aside>
   );
 }

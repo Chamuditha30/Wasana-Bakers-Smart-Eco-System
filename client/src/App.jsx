@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import WebLayout from "./layouts/WebLayout";
 import HomePage from "./pages/web/HomePage";
 import CakesPage from "./pages/web/CakesPage";
+
 import POSLayout from "./layouts/POSLayout";
 import LoginPage from "./pages/pos/LoginPage";
 import DashboardPage from "./pages/pos/DashboardPage";
@@ -17,24 +18,21 @@ import ReportsPage from "./pages/pos/ReportsPage";
 import NotificationsPage from "./pages/pos/NotificationsPage";
 import SettingsPage from "./pages/pos/SettingsPage";
 
-// POS Pages & Layouts
-import StaffLogin from "./pages/web/pos/StaffLogin";
-import PosLayout from "./layouts/PosLayout";
-import DashboardOverview from "./pages/web/pos/DashboardOverview";
-
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public */}
+        {/* Leader ගේ Customer Public Pages */}
         <Route element={<WebLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/cakes" element={<CakesPage />} />
         </Route>
 
-        {/* POS */}
+        {/* Staff Authentication */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* ඔයාගේ POS System Pages */}
         <Route element={<POSLayout />}>
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/sales" element={<SalesPage />} />
           <Route path="/orders" element={<OrdersPage />} />
@@ -48,9 +46,10 @@ function App() {
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
+
+        {/* වැරදි routes සඳහා Redirect වීම */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;
