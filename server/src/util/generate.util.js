@@ -1,3 +1,5 @@
+import { randomBytes } from "crypto";
+
 //generate unique slug
 export const generateSlug = (name) => {
   return name
