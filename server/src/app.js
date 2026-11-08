@@ -7,6 +7,7 @@ import branchRoute from "./routes/branch.route.js";
 import authRoute from "./routes/auth.route.js";
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/product.route.js";
+import inventoryRoute from "./routes/inventory.route.js";
 
 //initialize app
 export const app = express();
@@ -45,6 +46,7 @@ app.use("/branch", branchRoute);
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/product", productRoute);
+app.use("/inventory", inventoryRoute);
 
 //error handler
 app.use(errorHandler);

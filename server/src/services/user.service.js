@@ -92,6 +92,11 @@ export const updateUserService = async (_id, branch, data) => {
     Object.entries(data).filter(([key]) => allowedFields.includes(key)),
   );
 
+  //reject empty updates
+  if (Object.keys(updateData).length === 0) {
+    throw createError("No valid fields provided", 400);
+  }
+
   //update user
   const user = await User.findOneAndUpdate(
     { _id, branch },
