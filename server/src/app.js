@@ -3,6 +3,11 @@ import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import branchRoute from "./routes/branch.route.js";
+import authRoute from "./routes/auth.route.js";
+import userRoute from "./routes/user.route.js";
+import productRoute from "./routes/product.route.js";
+import inventoryRoute from "./routes/inventory.route.js";
 
 //initialize app
 export const app = express();
@@ -37,6 +42,11 @@ app.use(cookieParser());
 app.use(express.urlencoded({ limit: "3mb", extended: false }));
 
 //routes
+app.use("/branch", branchRoute);
+app.use("/auth", authRoute);
+app.use("/user", userRoute);
+app.use("/product", productRoute);
+app.use("/inventory", inventoryRoute);
 
 //error handler
 app.use(errorHandler);

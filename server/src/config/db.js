@@ -1,10 +1,7 @@
-import "dotenv/config";
 import mongoose from "mongoose";
 
 //get mongo connection string
-const MONGO_URI =
-  process.env.MONGO_URI ||
-  "mongodb://127.0.0.1:27017/<<<<<collection_name>>>>>";
+const MONGO_URI = process.env.MONGO_URI;
 
 //function for connect to database
 export const connectDatabase = async () => {

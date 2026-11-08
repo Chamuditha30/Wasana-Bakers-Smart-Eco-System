@@ -50,20 +50,44 @@ const branchSchema = new Schema(
     },
 
     bankDetails: {
-      bankName: "Bank of Ceylon",
-      accountName: "Wasana Bakers PVT/LTD",
-      accountNumber: "1234567890",
-      branch: "Anuradhapura",
+      bankName: {
+        type: String,
+        required: true,
+      },
+      accountName: {
+        type: String,
+        required: true,
+      },
+      accountNumber: {
+        type: String,
+        required: true,
+      },
+      branch: {
+        type: String,
+        required: true,
+      },
     },
 
     paymentMethods: {
-      bankTransfer: true,
-      payOnPickup: true,
+      bankTransfer: {
+        type: Boolean,
+        default: true,
+      },
+      payOnPickup: {
+        type: Boolean,
+        default: true,
+      },
     },
 
     pickupSettings: {
-      slotDurationMinutes: 60,
-      defaultCapacity: 10,
+      slotDurationMinutes: {
+        type: Number,
+        default: 60,
+      },
+      defaultCapacity: {
+        type: Number,
+        default: 10,
+      },
     },
 
     isActive: {

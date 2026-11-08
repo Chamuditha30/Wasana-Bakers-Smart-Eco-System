@@ -18,6 +18,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
 
     role: {
@@ -28,6 +29,11 @@ const userSchema = new Schema(
     isActive: {
       type: Boolean,
       required: true,
+      default: true,
+    },
+
+    mustChangePassword: {
+      type: Boolean,
       default: true,
     },
 
@@ -42,11 +48,10 @@ const userSchema = new Schema(
 );
 
 //hashing password before save
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
   if (this.isModified("password")) {
     this.password = await hashPassword(this.password);
   }
-  next();
 });
 
 export const User = model("User", userSchema);
