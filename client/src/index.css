@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  /* Main brand color */
+  --color-primary: #c8102e;
+
+  /* Dark brown for headings and strong text */
+  --color-secondary: #2b211d;
+
+  /* Supporting brown */
+  --color-tertiary: #7a4b35;
+
+  /* Main and alternate backgrounds */
+  --color-white: #ffffff;
+  --color-surface: #f7f5f0;
+
+  /* Text and borders */
+  --color-muted: #555555;
+  --color-border: #d3d3d3;
+}
