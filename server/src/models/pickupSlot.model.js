@@ -22,7 +22,12 @@ const pickupSlotSchema = new Schema(
       type: Number,
       required: true,
       min: 1,
-      default: 10,
+    },
+
+    bookedCount: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
 
     isActive: {
@@ -38,6 +43,16 @@ const pickupSlotSchema = new Schema(
     },
   },
   { timestamps: true },
+);
+
+//create compound indexes for prevent duplicate pickup slots
+pickupSlotSchema.index(
+  {
+    branch: 1,
+    date: 1,
+    startTime: 1,
+  },
+  { unique: true },
 );
 
 export const PickupSlot = model("PickupSlot", pickupSlotSchema);

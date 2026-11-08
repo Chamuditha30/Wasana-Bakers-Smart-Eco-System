@@ -3,25 +3,13 @@ import { Schema, model } from "mongoose";
 //create model
 const paymentSchema = new Schema(
   {
-    paymentRef: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-
-    method: {
-      type: String,
-      enum: ["bank_transfer", "pay_on_pickup"],
-      required: true,
-    },
-
     amount: {
       type: Number,
       required: true,
       min: 0,
     },
 
-    status: {
+    paymentStatus: {
       type: String,
       enum: ["pending", "confirmed", "rejected"],
       default: "pending",
@@ -55,5 +43,7 @@ const paymentSchema = new Schema(
   },
   { timestamps: true },
 );
+
+paymentSchema.index({ order: 1 }, { unique: true });
 
 export const Payment = model("Payment", paymentSchema);

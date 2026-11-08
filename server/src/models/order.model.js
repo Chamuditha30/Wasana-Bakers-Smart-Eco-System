@@ -3,70 +3,95 @@ import { Schema, model } from "mongoose";
 //create model
 const orderSchema = new Schema(
   {
+    //unique order reference
     orderRef: {
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
 
+    //order source
     source: {
       type: String,
       enum: ["online", "pos"],
       required: true,
     },
 
+    //customer details
     customer: {
       name: {
         type: String,
-        required: function () {
-          return this.source === "website";
-        },
+        trim: true,
       },
 
       phone: {
         type: String,
-        required: function () {
-          return this.source === "website";
-        },
+        trim: true,
       },
     },
 
-    items: [
-      {
-        product: {
-          type: Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
+    //order items
+    items: {
+      type: [
+        {
+          //product reference
+          product: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+            required: true,
+          },
 
-        productName: {
-          type: String,
-          required: true,
-        },
+          //product snapshot
+          productName: {
+            type: String,
+            required: true,
+          },
 
-        size: {
-          type: String,
-          required: true,
-        },
+          pricingType: {
+            type: String,
+            enum: ["per_kg", "fixed"],
+            required: true,
+          },
 
-        unitPrice: {
-          type: Number,
-          required: true,
-          min: 0,
-        },
+          //price per kg or per cake
+          unitPrice: {
+            type: Number,
+            required: true,
+            min: 0,
+          },
 
-        quantity: {
-          type: Number,
-          required: true,
-          min: 1,
-        },
+          //weight for regular cakes
+          weight: {
+            type: Number,
+            min: 0,
+          },
 
-        message: {
-          type: String,
-          default: "",
+          //qty for special cakes
+          quantity: {
+            type: Number,
+            required: true,
+            min: 1,
+          },
+
+          //final price for this item
+          lineTotal: {
+            type: Number,
+            required: true,
+            min: 0,
+          },
+
+          message: {
+            type: String,
+            default: "",
+          },
         },
+      ],
+      validate: {
+        validator: (items) => items.length > 0,
+        message: "An order must contain at least one item",
       },
-    ],
+    },
 
     totalAmount: {
       type: Number,
@@ -74,10 +99,10 @@ const orderSchema = new Schema(
       min: 0,
     },
 
-    paymentStatus: {
+    paymentMethod: {
       type: String,
-      enum: ["pending", "confirmed", "rejected"],
-      default: "pending",
+      enum: ["bank_transfer", "pay_on_pickup", "cash"],
+      required: true,
     },
 
     orderStatus: {
@@ -97,7 +122,9 @@ const orderSchema = new Schema(
     pickupSlot: {
       type: Schema.Types.ObjectId,
       ref: "PickupSlot",
-      required: true,
+      required: function () {
+        return this.source === "online";
+      },
     },
 
     //branch reference
