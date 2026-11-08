@@ -8,6 +8,10 @@ import authRoute from "./routes/auth.route.js";
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/product.route.js";
 import inventoryRoute from "./routes/inventory.route.js";
+import pickupSlotRoute from "./routes/pickupSlot.route.js";
+import orderRoute from "./routes/order.route.js";
+import paymentRoute from "./routes/payment.route.js";
+import expenseRoute from "./routes/expense.route.js";
 
 //initialize app
 export const app = express();
@@ -19,7 +23,7 @@ app.use(helmet());
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "http://http://localhost:5173",
+  "http://localhost:5173",
 ];
 
 //apply cors
@@ -47,6 +51,10 @@ app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/product", productRoute);
 app.use("/inventory", inventoryRoute);
+app.use("/pickup-slot", pickupSlotRoute);
+app.use("/order", orderRoute);
+app.use("/payment", paymentRoute);
+app.use("/expense", expenseRoute);
 
 //error handler
 app.use(errorHandler);
