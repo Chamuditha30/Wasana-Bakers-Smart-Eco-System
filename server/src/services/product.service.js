@@ -76,9 +76,67 @@ export const createProductService = async (branch, data) => {
 };
 
 //get all products
-export const getAllProductsService = async (branch) => {
-  //find products
-  return Product.find({ branch });
+export const getAllProductsService = async (branch, filters) => {
+  //extract filters
+  const {
+    search,
+    category,
+    pricingType,
+    isAvailable,
+    page = 1,
+    limit = 20,
+  } = filters;
+
+  //initialize query with branch
+  const query = { branch };
+
+  //search by product name
+  if (search && search.trim()) {
+    query.name = {
+      $regex: search.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+      $options: "i",
+    };
+  }
+
+  //filter by category
+  if (category) query.category = category;
+
+  // filter by pricing type
+  if (pricingType) {
+    if (!["by_weight", "fixed"].includes(pricingType))
+      throw createError("Invalid pricing type", 400);
+
+    query.pricingType = pricingType;
+  }
+
+  //filter by availability
+  if (isAvailable !== undefined) {
+    if (!["true", "false"].includes(isAvailable))
+      throw createError("Invalid availability value", 400);
+
+    query.isAvailable = isAvailable === "true";
+  }
+
+  //pagination
+  const currentPage = Math.max(1, Number(page) || 1);
+  const perPage = Math.min(50, Math.max(1, Number(limit) || 20));
+
+  const skip = (currentPage - 1) * perPage;
+
+  //get products and total count
+  const [products, total] = await Promise.all([
+    Product.find(query).sort({ createdAt: -1 }).skip(skip).limit(perPage),
+
+    Product.countDocuments(query),
+  ]);
+
+  return {
+    products,
+    total,
+    page: currentPage,
+    limit: perPage,
+    totalPages: Math.ceil(total / perPage),
+  };
 };
 
 //get product by id

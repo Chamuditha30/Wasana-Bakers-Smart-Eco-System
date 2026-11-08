@@ -19,7 +19,7 @@ export const createProductController = asyncHandler(async (req, res) => {
 
 //get all products
 export const getAllProductsController = asyncHandler(async (req, res) => {
-  const products = await getAllProductsService(req.user.branchId);
+  const products = await getAllProductsService(req.user.branchId, req.query);
 
   res.status(200).json({
     message: "Products retrieved successfully",
