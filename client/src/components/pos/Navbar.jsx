@@ -16,7 +16,7 @@ import {
   Ellipsis,
 } from "lucide-react";
 import logo from "../../images/logo.webp";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   Menu,
@@ -24,6 +24,7 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
+import { useAuth } from "../../hooks/useAuth";
 
 //navigation links
 const navigations = [
@@ -89,12 +90,26 @@ const navigations = [
   },
 ];
 
-//sample user
-const user = { name: "Wasana Kumari", role: "Admin" };
-
 export default function Navbar() {
   //initialize useLocation
   const location = useLocation();
+
+  //initialize auth
+  const { user, logout } = useAuth();
+
+  //initialize navigate
+  const navigate = useNavigate();
+
+  //logout
+  const handleLogout = async () => {
+    try {
+      await logout();
+
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Logout failed", error.message);
+    }
+  };
 
   return (
     <>
@@ -152,7 +167,10 @@ export default function Navbar() {
             <p className="text-xs text-white/75">{user.role}</p>
           </div>
 
-          <LogOut className="cursor-pointer text-white/75 transition-colors duration-300 ease-out hover:font-semibold hover:text-white" />
+          <LogOut
+            onClick={handleLogout}
+            className="cursor-pointer text-white/75 transition-colors duration-300 ease-out hover:font-semibold hover:text-white"
+          />
         </div>
       </div>
 
@@ -246,7 +264,10 @@ export default function Navbar() {
             <div className="border-tertiary my-2 border-t" />
 
             <MenuItem>
-              <Button className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm text-red-400">
+              <Button
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm text-red-400"
+              >
                 {" "}
                 <LogOut size={18} />
                 <p>Logout</p>
