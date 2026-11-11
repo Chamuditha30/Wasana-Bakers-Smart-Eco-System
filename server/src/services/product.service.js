@@ -7,13 +7,26 @@ import {
   deleteInventoryService,
 } from "./inventory.service.js";
 import { validateProductPricing } from "../util/product.util.js";
+import { deleteImages, uploadImages } from "./cloudinary.service.js";
 
 //create new product
-export const createProductService = async (branch, data) => {
+export const createProductService = async (branch, data, files = []) => {
+  //validate images
+  if (!files || files.length === 0)
+    throw createError("At least one image is required", 400);
+
+  //initialize upload images
+  let uploadedImages = [];
+
   //initialize transaction session
-  const session = await startSession();
+  let session;
 
   try {
+    //upload images before database transaction
+    uploadedImages = await uploadImages(files);
+
+    session = await startSession();
+
     //initialize product
     let product;
 
@@ -24,7 +37,6 @@ export const createProductService = async (branch, data) => {
         name,
         category,
         description,
-        images,
         pricingType,
         pricePerKg,
         price,
@@ -53,7 +65,7 @@ export const createProductService = async (branch, data) => {
         slug,
         category,
         description,
-        images,
+        images: uploadedImages,
         pricingType,
         pricePerKg: pricingType === "by_weight" ? pricePerKg : undefined,
         price: pricingType === "fixed" ? price : undefined,
@@ -69,6 +81,11 @@ export const createProductService = async (branch, data) => {
     });
 
     return product;
+  } catch (error) {
+    //delete uploaded images if database operation fails
+    await deleteImages(uploadedImages).catch(console.error);
+
+    throw error;
   } finally {
     //end transaction session
     await session.endSession();
@@ -150,33 +167,37 @@ export const getProductByIdService = async (_id, branch) => {
 };
 
 //update product
-export const updateProductService = async (_id, branch, data) => {
+export const updateProductService = async (_id, branch, data, files = []) => {
   //allowed fields
   const allowedFields = [
     "name",
     "category",
     "description",
-    "images",
     "pricingType",
     "pricePerKg",
     "price",
     "weight",
-    "isAvailable",
   ];
 
   const updateData = Object.fromEntries(
     Object.entries(data).filter(([key]) => allowedFields.includes(key)),
   );
 
-  //reject empty updates
-  if (Object.keys(updateData).length === 0) {
-    throw createError("No valid fields provided", 400);
-  }
-
-  // find existing product
+  //find existing product
   const product = await Product.findOne({ _id, branch });
 
   if (!product) throw createError("Product not found", 404);
+
+  //keep original images
+  const oldImages = [...product.images];
+
+  //check whether images are being updated
+  const hasImageChanges =
+    data.existingImageIds !== undefined || files.length > 0;
+
+  //reject empty updates
+  if (Object.keys(updateData).length === 0 && !hasImageChanges)
+    throw createError("No valid fields provided", 400);
 
   //prevent pricing type changes
   if (
@@ -189,63 +210,174 @@ export const updateProductService = async (_id, branch, data) => {
     );
   }
 
-  //regenerate slug if name changes
-  if (updateData.name !== undefined) {
-    const baseSlug = generateSlug(updateData.name);
+  //Initialize existing images
+  let existingImages = oldImages;
 
-    let slug = baseSlug;
-    let count = 1;
+  //process image changes
+  if (hasImageChanges) {
+    let existingImageIds;
 
-    while (
-      await Product.findOne({
-        slug,
-        _id: { $ne: _id },
-      })
-    ) {
-      count++;
-      slug = `${baseSlug}-${count}`;
+    try {
+      existingImageIds =
+        data.existingImageIds !== undefined
+          ? JSON.parse(data.existingImageIds)
+          : oldImages.map((image) => image.publicId);
+    } catch {
+      throw createError("Invalid existing image data", 400);
     }
 
-    updateData.slug = slug;
+    //validate image ids
+    if (
+      !Array.isArray(existingImageIds) ||
+      !existingImageIds.every((id) => typeof id === "string")
+    )
+      throw createError("Invalid existing image data", 400);
+
+    //get existing images to keep
+    existingImages = oldImages.filter((image) =>
+      existingImageIds.includes(image.publicId),
+    );
+
+    //validate image IDs
+    if (
+      existingImages.length !== existingImageIds.length ||
+      new Set(existingImageIds).size !== existingImageIds.length
+    ) {
+      throw createError("Invalid product images", 400);
+    }
   }
 
-  //get final pricing information
-  const finalPricing = {
-    pricingType: updateData.pricingType ?? product.pricingType,
+  //upload new images
+  let uploadedImages = [];
 
-    pricePerKg:
-      updateData.pricePerKg !== undefined
-        ? updateData.pricePerKg
-        : product.pricePerKg,
+  try {
+    if (files.length > 0) {
+      uploadedImages = await uploadImages(files);
+    }
 
-    price: updateData.price !== undefined ? updateData.price : product.price,
-  };
+    //combine existing and new images
+    const finalImages = [...existingImages, ...uploadedImages];
 
-  //validate final pricing information
-  validateProductPricing(finalPricing);
+    //validate image count
+    if (hasImageChanges) {
+      if (finalImages.length === 0)
+        throw createError("At least one image is required", 400);
 
-  //apply updates
-  Object.assign(product, updateData);
+      if (finalImages.length > 5)
+        throw createError("Maximum 5 images allowed", 400);
+    }
 
-  //remove irrelevant pricing field
-  if (product.pricingType === "by_weight") {
-    product.price = undefined;
-  } else {
-    product.pricePerKg = undefined;
+    //regenerate slug if name changes
+    if (updateData.name !== undefined) {
+      const baseSlug = generateSlug(updateData.name);
+
+      let slug = baseSlug;
+      let count = 1;
+
+      while (
+        await Product.findOne({
+          slug,
+          _id: { $ne: _id },
+        })
+      ) {
+        count++;
+        slug = `${baseSlug}-${count}`;
+      }
+
+      updateData.slug = slug;
+    }
+
+    //get final pricing information
+    const finalPricing = {
+      pricingType: updateData.pricingType ?? product.pricingType,
+
+      pricePerKg:
+        updateData.pricePerKg !== undefined
+          ? updateData.pricePerKg
+          : product.pricePerKg,
+
+      price: updateData.price !== undefined ? updateData.price : product.price,
+    };
+
+    //validate final pricing information
+    validateProductPricing(finalPricing);
+
+    //apply updates
+    Object.assign(product, updateData);
+
+    //update images
+    if (hasImageChanges) product.images = finalImages;
+
+    //remove irrelevant pricing field
+    if (product.pricingType === "by_weight") {
+      product.price = undefined;
+    } else {
+      product.pricePerKg = undefined;
+    }
+
+    //update product
+    await product.save();
+  } catch (error) {
+    //remove newly uploaded images if update fails
+    await deleteImages(uploadedImages).catch(console.error);
+
+    throw error;
   }
 
-  //update product
-  await product.save();
+  //identify removed existing images
+  const removedImages = oldImages.filter(
+    (image) =>
+      !existingImages.some(
+        (keptImage) => keptImage.publicId === image.publicId,
+      ),
+  );
+
+  //delete removed images from Cloudinary
+  if (removedImages.length > 0) {
+    try {
+      await deleteImages(removedImages);
+    } catch (error) {
+      console.error("Cloudinary image deletion failed:", error);
+    }
+  }
 
   return product;
+};
+
+//deactivate product
+export const deactivateProductService = async (_id, branch) => {
+  //find product
+  const product = await Product.findOne({ _id, branch });
+
+  if (!product) throw createError("Product not found", 404);
+
+  //deactivate product
+  product.isAvailable = false;
+
+  return product.save();
+};
+
+//activate product
+export const activateProductService = async (_id, branch) => {
+  //find product
+  const product = await Product.findOne({ _id, branch });
+
+  if (!product) throw createError("Product not found", 404);
+
+  //deactivate product
+  product.isAvailable = true;
+
+  return product.save();
 };
 
 //delete product
 export const deleteProductService = async (_id, branch) => {
   //initialize transaction session
-  const session = await startSession();
+  let session;
 
   try {
+    session = await startSession();
+
     //initialize product
     let product;
 
@@ -264,6 +396,11 @@ export const deleteProductService = async (_id, branch) => {
       //delete product
       product = await Product.findOneAndDelete({ _id, branch }, { session });
     });
+
+    //delete product images from Cloudinary
+    if (product.images.length > 0) {
+      await deleteImages(product.images);
+    }
 
     return product;
   } finally {

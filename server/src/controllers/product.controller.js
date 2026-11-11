@@ -1,5 +1,7 @@
 import {
+  activateProductService,
   createProductService,
+  deactivateProductService,
   deleteProductService,
   getAllProductsService,
   getProductByIdService,
@@ -9,7 +11,11 @@ import { asyncHandler } from "../util/async.util.js";
 
 //create new product
 export const createProductController = asyncHandler(async (req, res) => {
-  const product = await createProductService(req.user.branchId, req.body);
+  const product = await createProductService(
+    req.user.branchId,
+    req.body,
+    req.files,
+  );
 
   res.status(201).json({
     message: "Product created successfully",
@@ -46,10 +52,37 @@ export const updateProductController = asyncHandler(async (req, res) => {
     req.params.productId,
     req.user.branchId,
     req.body,
+    req.files,
   );
 
   res.status(200).json({
     message: "Product updated successfully",
+    data: product,
+  });
+});
+
+//deactivate product
+export const deactivateProductController = asyncHandler(async (req, res) => {
+  const product = await deactivateProductService(
+    req.params.productId,
+    req.user.branchId,
+  );
+
+  res.status(200).json({
+    message: "Product deactivated successfully",
+    data: product,
+  });
+});
+
+//activate product
+export const activateProductController = asyncHandler(async (req, res) => {
+  const product = await activateProductService(
+    req.params.productId,
+    req.user.branchId,
+  );
+
+  res.status(200).json({
+    message: "Product activated successfully",
     data: product,
   });
 });
