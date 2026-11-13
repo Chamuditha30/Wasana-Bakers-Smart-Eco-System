@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import WebLayout from "./layouts/WebLayout";
 import HomePage from "./pages/web/HomePage";
 import CakesPage from "./pages/web/CakesPage";
@@ -16,8 +16,22 @@ import ExpensesPage from "./pages/pos/ExpensesPage";
 import ReportsPage from "./pages/pos/ReportsPage";
 import NotificationsPage from "./pages/pos/NotificationsPage";
 import SettingsPage from "./pages/pos/SettingsPage";
+import { useAuth } from "./hooks/useAuth";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { LoaderCircle } from "lucide-react";
 
 function App() {
+  //initialize auth
+  const { user, loading } = useAuth();
+
+  //wait for initial authentication check
+  if (loading)
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-white">
+        <LoaderCircle size={40} className="text-primary animate-spin" />
+      </div>
+    );
+
   return (
     <BrowserRouter>
       <Routes>
@@ -28,20 +42,26 @@ function App() {
         </Route>
 
         {/* POS */}
-        <Route element={<POSLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/sales" element={<SalesPage />} />
-          <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/inventory" element={<InventoryPage />} />
-          <Route path="/payments" element={<PaymentsPage />} />
-          <Route path="/pickup-slots" element={<PickupSlotsPage />} />
-          <Route path="/customers" element={<CustomersPage />} />
-          <Route path="/expenses" element={<ExpensesPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+        />
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<POSLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/sales" element={<SalesPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="/payments" element={<PaymentsPage />} />
+            <Route path="/pickup-slots" element={<PickupSlotsPage />} />
+            <Route path="/customers" element={<CustomersPage />} />
+            <Route path="/expenses" element={<ExpensesPage />} />
+            <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

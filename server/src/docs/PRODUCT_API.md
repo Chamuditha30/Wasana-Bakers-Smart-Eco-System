@@ -6,13 +6,15 @@
 
 ## Endpoints
 
-| Method | Endpoint             | Description          | Access                |
-| ------ | -------------------- | -------------------- | --------------------- |
-| POST   | `/create`            | Create a new product | Authenticated, Active |
-| GET    | `/`                  | Get all products     | Authenticated, Active |
-| GET    | `/:productId`        | Get product by ID    | Authenticated, Active |
-| PUT    | `/update/:productId` | Update product       | Authenticated, Active |
-| DELETE | `/delete/:productId` | Delete product       | Authenticated, Active |
+| Method | Endpoint                 | Description          | Access                       |
+| ------ | ------------------------ | -------------------- | ---------------------------- |
+| POST   | `/create`                | Create a new product | Authenticated, Active        |
+| GET    | `/`                      | Get all products     | Authenticated, Active        |
+| GET    | `/:productId`            | Get product by ID    | Authenticated, Active        |
+| PUT    | `/update/:productId`     | Update product       | Authenticated, Active        |
+| PUT    | `/deactivate/:productId` | Deactivate product   | Authenticated, Active, Admin |
+| PUT    | `/activate/:productId`   | Activate product     | Authenticated, Active, Admin |
+| DELETE | `/delete/:productId`     | Delete product       | Authenticated, Active, Admin |
 
 ### URL Parameters
 
