@@ -15,20 +15,21 @@ export default function PublicCakeCard({
       >
         {status}
       </p>
-      <img
-        src={image}
-        alt="Cake Image"
-        className="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-      />
+
+      <div className="transition-transform duration-500 ease-out group-hover:scale-110">
+        <Carousel images={images} />
+      </div>
 
       <div className="bg-surface p-4">
-        <p className="text-secondary text-2xl font-semibold">{name}</p>
-        <p className="text-tertiary min-h-14 text-lg">{description}</p>
+        <p className="text-secondary text-lg font-semibold md:text-2xl">
+          {name}
+        </p>
+        <p className="text-tertiary min-h-14 md:text-lg">{description}</p>
 
         <div className="mt-4 flex items-center gap-4">
           <div className="w-1/2">
-            <p className="text-tertiary text-lg">From</p>
-            <p className="text-2xl font-semibold">{price}</p>
+            <p className="text-tertiary md:text-lg">From</p>
+            <p className="text-lg font-semibold md:text-2xl">{price}</p>
           </div>
           <CustomButton>View Details</CustomButton>
         </div>

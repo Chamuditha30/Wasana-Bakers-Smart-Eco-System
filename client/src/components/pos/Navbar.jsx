@@ -114,7 +114,7 @@ export default function Navbar() {
   return (
     <>
       {/* desktop navbar */}
-      <div className="bg-secondary hidden h-screen w-1/6 flex-col justify-between p-6 md:flex">
+      <div className="bg-secondary sticky top-0 bottom-0 left-0 hidden h-screen w-1/6 flex-col justify-between p-6 md:flex">
         {/* logo container */}
         <div className="border-b-tertiary flex items-center gap-2 border-b pb-4">
           <img src={logo} alt="logo" className="size-12" />
@@ -175,7 +175,7 @@ export default function Navbar() {
       </div>
 
       {/* mobile bottom navbar */}
-      <div className="bg-secondary fixed right-0 bottom-0 left-0 z-10 flex w-full items-center justify-between gap-1 py-2 md:hidden">
+      <div className="bg-secondary fixed right-0 bottom-0 left-0 z-50 flex w-full items-center justify-between gap-1 py-2 md:hidden">
         {[
           ...navigations
             .filter((nav) =>

@@ -8,6 +8,7 @@ import {
 } from "./inventory.service.js";
 import { validateProductPricing } from "../util/product.util.js";
 import { deleteImages, uploadImages } from "./cloudinary.service.js";
+import { Inventory } from "../models/inventory.model.js";
 
 //create new product
 export const createProductService = async (branch, data, files = []) => {
@@ -147,8 +148,23 @@ export const getAllProductsService = async (branch, filters) => {
     Product.countDocuments(query),
   ]);
 
+  //get inventory for these products
+  const inventories = await Inventory.find({
+    product: { $in: products.map((product) => product._id) },
+    branch,
+  });
+
+  //attach inventory to each product
+  const productsWithInventory = products.map((product) => ({
+    ...product.toObject(),
+    inventory:
+      inventories.find(
+        (inventory) => inventory.product.toString() === product._id.toString(),
+      ) || null,
+  }));
+
   return {
-    products,
+    products: productsWithInventory,
     total,
     page: currentPage,
     limit: perPage,
