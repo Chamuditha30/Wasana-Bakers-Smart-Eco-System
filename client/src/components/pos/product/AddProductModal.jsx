@@ -70,6 +70,12 @@ export default function AddProductModal({ isOpen, onClose, onCreate }) {
     setErrors({});
   };
 
+  //handle modal close
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
   //handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,7 +112,7 @@ export default function AddProductModal({ isOpen, onClose, onCreate }) {
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose} className="relative z-50">
+    <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
       {/* background overlay */}
       <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
 
@@ -201,16 +207,13 @@ export default function AddProductModal({ isOpen, onClose, onCreate }) {
             />
 
             <div className="flex w-full items-center justify-center gap-2">
-              <CustomButton type="submit" className="md:w-full">
+              <CustomButton type="submit" disabled={loading}>
                 {loading ? "Adding..." : "Add"}
               </CustomButton>
               <CustomButton
                 variant="outlined"
-                onClick={() => {
-                  resetForm();
-                  onClose();
-                }}
-                className="md:w-full"
+                disabled={loading}
+                onClick={handleClose}
               >
                 Cancel
               </CustomButton>

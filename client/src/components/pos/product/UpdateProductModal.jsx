@@ -241,7 +241,7 @@ export default function UpdateProductModal({
             />
 
             <div className="flex w-full items-center justify-center gap-2">
-              <CustomButton type="submit">
+              <CustomButton type="submit" disabled={loading}>
                 {loading ? "Updating..." : "Update"}
               </CustomButton>
               <CustomButton variant="secondary" onClick={() => onClose()}>
@@ -250,6 +250,7 @@ export default function UpdateProductModal({
               <CustomButton
                 onClick={handleDelete}
                 variant="secondary"
+                disabled={loading}
                 className={`${user.role === "admin" ? "block" : "hidden"}`}
               >
                 {loading ? "Deleting..." : <Trash className="text-primary" />}
