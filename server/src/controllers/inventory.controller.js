@@ -9,7 +9,10 @@ import { asyncHandler } from "../util/async.util.js";
 
 //get all inventories
 export const getAllInventoriesController = asyncHandler(async (req, res) => {
-  const inventories = await getAllInventoriesService(req.user.branchId);
+  const inventories = await getAllInventoriesService(
+    req.user.branchId,
+    req.query,
+  );
 
   res.status(200).json({
     message: "Inventories retrieved successfully",

@@ -37,13 +37,13 @@ export const validateProductStatus = (
   available,
   lowStockThreshold,
 ) => {
-  // check product availability
+  //check product availability
   if (!isAvailable) return "Unavailable";
 
-  // check stock
+  //check stock
   if (available <= 0) return "Sold Out";
 
-  // check low stock
+  //check low stock
   if (available <= lowStockThreshold) return "Limited";
 
   return "Available";

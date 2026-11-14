@@ -1,4 +1,5 @@
 import { Inventory } from "../models/inventory.model.js";
+import { Product } from "../models/product.model.js";
 import { createError } from "../util/error.util.js";
 
 //create new inventory
@@ -22,11 +23,95 @@ export const createInventoryService = async (branch, product, session) => {
 };
 
 //get all inventories
-export const getAllInventoriesService = async (branch) => {
-  return Inventory.find({ branch }).populate(
-    "product",
-    "name category pricingType pricePerKg price",
+export const getAllInventoriesService = async (branch, filters) => {
+  //extract filters
+  const { search, category, status, page = 1, limit = 20 } = filters;
+
+  //initialize query with branch
+  const query = { branch };
+
+  //filter by category
+  if (category) {
+    const products = await Product.find({ category }).select("_id");
+
+    query.product = { $in: products.map((product) => product._id) };
+  }
+
+  //filter by stock status
+  if (status) {
+    if (!["available", "low_stock", "out_of_stock"].includes(status)) {
+      throw createError("Invalid stock status", 400);
+    }
+
+    if (status === "out_of_stock") {
+      query.$expr = {
+        $lte: [{ $subtract: ["$available", "$reserved"] }, 0],
+      };
+    }
+
+    if (status === "low_stock") {
+      query.$expr = {
+        $and: [
+          { $gt: [{ $subtract: ["$available", "$reserved"] }, 0] },
+          {
+            $lte: [
+              { $subtract: ["$available", "$reserved"] },
+              "$lowStockThreshold",
+            ],
+          },
+        ],
+      };
+    }
+
+    if (status === "available") {
+      query.$expr = {
+        $gt: [{ $subtract: ["$available", "$reserved"] }, "$lowStockThreshold"],
+      };
+    }
+  }
+
+  //pagination
+  const currentPage = Math.max(1, Number(page) || 1);
+  const perPage = Math.min(50, Math.max(1, Number(limit) || 20));
+
+  const skip = (currentPage - 1) * perPage;
+
+  //get inventories and total count
+  const [inventories, total] = await Promise.all([
+    Inventory.find(query)
+      .populate({
+        path: "product",
+        select: "name category pricingType pricePerKg price",
+        match: search
+          ? {
+              name: {
+                $regex: search.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+                $options: "i",
+              },
+            }
+          : {},
+      })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(perPage),
+
+    Inventory.countDocuments(query),
+  ]);
+
+  //remove inventories without matching products
+  const filteredInventories = inventories.filter(
+    (inventory) => inventory.product,
   );
+
+  return {
+    inventories: filteredInventories,
+    total: search ? filteredInventories.length : total,
+    page: currentPage,
+    limit: perPage,
+    totalPages: Math.ceil(
+      (search ? filteredInventories.length : total) / perPage,
+    ),
+  };
 };
 
 //get inventory by product
@@ -49,7 +134,7 @@ export const addInventoryStockService = async (product, branch, amount) => {
   //find inventory
   const inventory = await Inventory.findOne({ product, branch });
 
-  if (!inventory) createError("Inventory not found", 404);
+  if (!inventory) throw createError("Inventory not found", 404);
 
   //increase available stock
   inventory.available += amount;
