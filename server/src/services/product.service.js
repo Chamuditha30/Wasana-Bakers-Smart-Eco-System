@@ -9,6 +9,7 @@ import {
 import { validateProductPricing } from "../util/product.util.js";
 import { deleteImages, uploadImages } from "./cloudinary.service.js";
 import { Inventory } from "../models/inventory.model.js";
+import { Branch } from "../models/branch.model.js";
 
 //create new product
 export const createProductService = async (branch, data, files = []) => {
@@ -93,7 +94,7 @@ export const createProductService = async (branch, data, files = []) => {
   }
 };
 
-//get all products
+//get all products for pos
 export const getAllProductsService = async (branch, filters) => {
   //extract filters
   const {
@@ -170,6 +171,21 @@ export const getAllProductsService = async (branch, filters) => {
     limit: perPage,
     totalPages: Math.ceil(total / perPage),
   };
+};
+
+//get all products for public
+export const getAllPublicProductsService = async (slug, filters) => {
+  //find branch using slug
+  const branch = await Branch.findOne({
+    slug,
+    isActive: true,
+  });
+
+  if (!branch) throw createError("Branch not found", 404);
+
+  const products = await getAllProductsService(branch._id, filters);
+
+  return products;
 };
 
 //get product by id

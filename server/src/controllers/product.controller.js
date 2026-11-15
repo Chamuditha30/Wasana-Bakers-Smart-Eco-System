@@ -4,6 +4,7 @@ import {
   deactivateProductService,
   deleteProductService,
   getAllProductsService,
+  getAllPublicProductsService,
   getProductByIdService,
   updateProductService,
 } from "../services/product.service.js";
@@ -26,6 +27,19 @@ export const createProductController = asyncHandler(async (req, res) => {
 //get all products
 export const getAllProductsController = asyncHandler(async (req, res) => {
   const products = await getAllProductsService(req.user.branchId, req.query);
+
+  res.status(200).json({
+    message: "Products retrieved successfully",
+    data: products,
+  });
+});
+
+//get all products for public
+export const getAllPublicProductsController = asyncHandler(async (req, res) => {
+  const products = await getAllPublicProductsService(
+    req.params.branchSlug,
+    req.query,
+  );
 
   res.status(200).json({
     message: "Products retrieved successfully",

@@ -91,7 +91,7 @@ export const createOrderService = async (branchValue, data, source) => {
               400,
             );
 
-          if (item.pricingType === "per_kg" && item.weight > 1)
+          if (item.pricingType === "by_weight" && item.weight > 1)
             throw createError(
               "Pay on Pickup allows a maximum of 1kg per regular cake",
               400,

@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import logo from "../../images/logo.webp";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import CustomButton from "../../ui/CustomButton";
 import { ShoppingCart, Menu, X } from "lucide-react";
 
 export default function Navbar() {
   //initialize nav bar state
   const [isOpen, setIsOpen] = useState(false);
+
+  //get branch slu from params
+  const { branchSlug } = useParams();
 
   return (
     <>
@@ -25,7 +28,7 @@ export default function Navbar() {
         {/* navigation links container */}
         <div className="text-secondary flex items-center gap-4 text-xl">
           <NavLink
-            to={"/"}
+            to={`/home/${branchSlug}`}
             end
             className={({ isActive }) =>
               `transition-colors duration-300 ease-out ${isActive ? "text-primary font-semibold" : "hover:text-primary hover:font-semibold"}`
@@ -34,7 +37,7 @@ export default function Navbar() {
             Home
           </NavLink>
           <NavLink
-            to={"/cakes"}
+            to={"cakes"}
             end
             className={({ isActive }) =>
               `transition-colors duration-300 ease-out ${isActive ? "text-primary font-semibold" : "hover:text-primary hover:font-semibold"}`
@@ -77,7 +80,7 @@ export default function Navbar() {
       >
         <NavLink
           onClick={() => setIsOpen(false)}
-          to={"/"}
+          to={`/home/${branchSlug}`}
           end
           className={({ isActive }) =>
             `transition-colors duration-300 ease-out ${isActive ? "text-primary font-semibold" : "hover:text-primary hover:font-semibold"}`
@@ -87,7 +90,7 @@ export default function Navbar() {
         </NavLink>
         <NavLink
           onClick={() => setIsOpen(false)}
-          to={"/cakes"}
+          to="cakes"
           end
           className={({ isActive }) =>
             `transition-colors duration-300 ease-out ${isActive ? "text-primary font-semibold" : "hover:text-primary hover:font-semibold"}`

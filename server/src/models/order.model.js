@@ -50,7 +50,7 @@ const orderSchema = new Schema(
 
           pricingType: {
             type: String,
-            enum: ["per_kg", "fixed"],
+            enum: ["by_weight", "fixed"],
             required: true,
           },
 
