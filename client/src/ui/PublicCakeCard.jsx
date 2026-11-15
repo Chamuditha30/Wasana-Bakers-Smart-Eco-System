@@ -1,12 +1,13 @@
 import React from "react";
 import CustomButton from "./CustomButton";
+import Carousel from "./Carousel";
 
 export default function PublicCakeCard({
   name,
   description,
   status,
   price,
-  image,
+  images = [],
 }) {
   return (
     <div className="bg-surfac group relative cursor-pointer overflow-hidden rounded-xl transition-shadow duration-300 ease-out hover:shadow-lg">

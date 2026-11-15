@@ -20,6 +20,9 @@ import { useAuth } from "./hooks/useAuth";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { LoaderCircle } from "lucide-react";
 
+//initialize default branch slug
+const DEFAULT_BRANCH_SLUG = "wasana-bakers-anuradhapura";
+
 function App() {
   //initialize auth
   const { user, loading } = useAuth();
@@ -36,9 +39,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Public */}
-        <Route element={<WebLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/cakes" element={<CakesPage />} />
+        <Route
+          path="/"
+          element={<Navigate to={`/home/${DEFAULT_BRANCH_SLUG}`} replace />}
+        />
+        <Route path="/home/:branchSlug" element={<WebLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="cakes" element={<CakesPage />} />
         </Route>
 
         {/* POS */}
