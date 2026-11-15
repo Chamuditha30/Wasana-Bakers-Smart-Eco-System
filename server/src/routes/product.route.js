@@ -5,6 +5,7 @@ import {
   deactivateProductController,
   deleteProductController,
   getAllProductsController,
+  getAllPublicProductsController,
   getProductByIdController,
   updateProductController,
 } from "../controllers/product.controller.js";
@@ -29,6 +30,9 @@ router.post(
 
 //get all products
 router.get("/", requireAuth, requireActive, getAllProductsController);
+
+//get all products for public
+router.get("/:branchSlug", getAllPublicProductsController);
 
 //get product by id
 router.get("/:productId", requireAuth, requireActive, getProductByIdController);
