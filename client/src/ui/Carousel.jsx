@@ -15,8 +15,8 @@ export default function Carousel({ images }) {
       className="w-full rounded-3xl"
     >
       {images.map((img) => (
-        <SwiperSlide key={img.src}>
-          <img src={img.src} alt={img.alt} className="w-full object-cover" />
+        <SwiperSlide key={img.publicId}>
+          <img src={img.url} alt={img.alt} className="w-full object-cover" />
         </SwiperSlide>
       ))}
     </Swiper>

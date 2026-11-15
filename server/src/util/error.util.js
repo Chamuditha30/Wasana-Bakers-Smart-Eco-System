@@ -1,0 +1,6 @@
+//make new error
+export const createError = (message, statusCode) => {
+  const err = new Error(message);
+  err.statusCode = statusCode;
+  return err;
+};

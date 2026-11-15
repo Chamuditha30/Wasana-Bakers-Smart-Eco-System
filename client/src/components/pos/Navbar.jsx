@@ -16,7 +16,7 @@ import {
   Ellipsis,
 } from "lucide-react";
 import logo from "../../images/logo.webp";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   Menu,
@@ -24,6 +24,7 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
+import { useAuth } from "../../hooks/useAuth";
 
 //navigation links
 const navigations = [
@@ -89,17 +90,31 @@ const navigations = [
   },
 ];
 
-//sample user
-const user = { name: "Wasana Kumari", role: "Admin" };
-
 export default function Navbar() {
   //initialize useLocation
   const location = useLocation();
 
+  //initialize auth
+  const { user, logout } = useAuth();
+
+  //initialize navigate
+  const navigate = useNavigate();
+
+  //logout
+  const handleLogout = async () => {
+    try {
+      await logout();
+
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Logout failed", error.message);
+    }
+  };
+
   return (
     <>
       {/* desktop navbar */}
-      <div className="bg-secondary hidden h-screen w-1/6 flex-col justify-between p-6 md:flex">
+      <div className="bg-secondary sticky top-0 bottom-0 left-0 hidden h-screen w-1/6 flex-col justify-between p-6 md:flex">
         {/* logo container */}
         <div className="border-b-tertiary flex items-center gap-2 border-b pb-4">
           <img src={logo} alt="logo" className="size-12" />
@@ -152,12 +167,15 @@ export default function Navbar() {
             <p className="text-xs text-white/75">{user.role}</p>
           </div>
 
-          <LogOut className="cursor-pointer text-white/75 transition-colors duration-300 ease-out hover:font-semibold hover:text-white" />
+          <LogOut
+            onClick={handleLogout}
+            className="cursor-pointer text-white/75 transition-colors duration-300 ease-out hover:font-semibold hover:text-white"
+          />
         </div>
       </div>
 
       {/* mobile bottom navbar */}
-      <div className="bg-secondary fixed right-0 bottom-0 left-0 z-10 flex w-full items-center justify-between gap-1 py-2 md:hidden">
+      <div className="bg-secondary fixed right-0 bottom-0 left-0 z-50 flex w-full items-center justify-between gap-1 py-2 md:hidden">
         {[
           ...navigations
             .filter((nav) =>
@@ -246,7 +264,10 @@ export default function Navbar() {
             <div className="border-tertiary my-2 border-t" />
 
             <MenuItem>
-              <Button className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm text-red-400">
+              <Button
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm text-red-400"
+              >
                 {" "}
                 <LogOut size={18} />
                 <p>Logout</p>

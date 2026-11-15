@@ -4,10 +4,10 @@ import Navbar from "../components/pos/Navbar";
 
 export default function POSLayout() {
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       <Navbar />
 
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
     </div>
